@@ -18,3 +18,8 @@ For doubles, overflow happens at 1024 iterations for 2^n, while underflow happen
 Machine precision for single-precision floating-point numbers is 6.2758e-08
 Machine precision for double-precision floating-point numbers is 1.05298-16
 Machine precision is the 'breaking point' below which numbers aren't changed by addition. 
+
+The makefile for area.cpp did work, though it threw a warning.
+
+The makefile works for flows.cpp, however I get two warnings
+

@@ -32,12 +32,11 @@
 
 #include <gsl/gsl_sf_bessel.h>  // gsl Bessel special function header file
 
-int
-main ()
+int main ()
 {
-  double x = 5.0;   // just a random test value
+  double x = 3.;   // just a random test value
 
-  double y = gsl_sf_bessel_J0 (x);   // see the GSL manual for details
+  double y = gsl_sf_bessel_J0(x);   // see the GSL manual for details
 
   std::cout << "J0(" << x << ") = " 
             << std::setprecision(18) << std::setw(20) << y << std::endl;

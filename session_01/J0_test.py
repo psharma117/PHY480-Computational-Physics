@@ -25,6 +25,7 @@ x = 5.0   # just a random test value
 answer = special.j0(x)   # see the scipy manual for details
 answer2 = special.jn(0, x)  # more general
 
-print 'These answers should be accurate to about 16 significant figures.\n'
-print 'Using j0:  J0(%.2f) = %.20e' % (x, answer)
-print 'Using jn:  J0(%.2f) = %.20e' % (x, answer2)
+print('These answers should be accurate to about 16 significant figures.\n')
+print ('Using j0:  J0(%.2f) = %.20e' % (x, answer))
+print ('Using jn:  J0(%.2f) = %.20e' % (x, answer2))
+print ('Using j0:  J0(%.2f) = %.20e' % (3.0, special.j0(3.0)))
