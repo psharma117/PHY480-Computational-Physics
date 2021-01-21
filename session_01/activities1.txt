@@ -21,5 +21,17 @@ Machine precision is the 'breaking point' below which numbers aren't changed by 
 
 The makefile for area.cpp did work, though it threw a warning.
 
-The makefile works for flows.cpp, however I get two warnings
+The makefile works for flows.cpp, I get the same warning.
+
+I can use the first graph on the Wiki page (Caption: Plot of bessel function of the first kind, ...) which has a number of places that I can roughly eyeball values at. For example, the trivial J0(0) = 1, J0(5) ~ -0.2, J0(15) ~ 0, J0(2.5) ~ 0. For more precise testing, I could iterate through a range of values that contains the point I estimate has a known value and see if I get the expected behavior of values. However, since my single point guesses prove sufficient to confirm the function, I'm not going to implement this. 
+
+The correct answer is given for J0(5).
+
+I find that for x = 3, J0(x) = -0.260051954901933446
+
+I used python, the pre-existing J0_test.py from the zip file. I was successful in my calculation of the Bessel function at x = 3.0
+
+A more general program could take in user input (like the area calculation) to fix the x-value instead of including it as a variable in the code. We could also choose the order of the bessel function via user input. Depending on available software, it could alternatively be handy to specify a range of x-values and plot the bessel function of a given order over said range.
+
+
 
