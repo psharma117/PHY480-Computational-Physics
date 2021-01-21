@@ -1,0 +1,20 @@
+Using full names removes unnecessary ambiguity. Anyone on earth who's reading the code will understand what's being done with radius and area.
+
+Adding "endl" breaks the output line so that the output isn't running on the same line as the terminal prompt.
+
+The line with the error could still end up being correct as far as the compiler is concerned, it's only when it sees what's coming after that it knows that there's a problem.
+
+A simple check is to use a radius of 1 and ensure that the area is pi. This can then be scaled by 10 as we'd expect this to just shift the decimal point over by 2 places.
+
+I can use a predefined values of pi, make an inline square function, split the calculation off, and add checks to the input. 
+
+First, Python doesn't need a main() function. Python also has input and print statements that are exactly what they sound like, and they're there by default instead of needing to be included with iostream. There's also no need for use of a particular namespace to use input/output commands in python. Python also seems to have the exponentiation operation built in.
+
+The output goes to a file called flows.out
+
+For floats, overflow occurs at 128 iterations for 2^n, while underflow happens at 150 iterations for 2^-n
+For doubles, overflow happens at 1024 iterations for 2^n, while underflow happens at 1075 iterations for 2^-n
+
+Machine precision for single-precision floating-point numbers is 6.2758e-08
+Machine precision for double-precision floating-point numbers is 1.05298-16
+Machine precision is the 'breaking point' below which numbers aren't changed by addition. 
