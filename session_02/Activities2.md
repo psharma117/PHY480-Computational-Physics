@@ -1,8 +1,10 @@
-**Why Might we care about formatting?**
+**__Why Might we care about formatting?__**
+
 Formatting is what makes code readable. Poorly formatted code can make it difficult to understand the scope of variables or general statements of code, whether it's in a loop or a function or something else. This makes it far easier for errors to happen when editing the code.
 
 
-**List the errors here:**
+**__List the errors here:__**
+
 ```
 quadratic_equation_1a.cpp:33:1: error: ISO C++ forbids declaration of ‘main’ with no type [-Werror=return-type]
    33 | main () {
@@ -27,6 +29,16 @@ quadratic_equation_1a.cpp:50:7: error: unused variable ‘x2p’ [-Werror=unused
 
 ```
 
-**Which two (of x1, x1p, x2, x2p) are the most accurate? Explain why the others are not as accurate.**
+**__Which two (of x1, x1p, x2, x2p) are the most accurate? Explain why the others are not as accurate.__**
+
+The most accurate of these 4 computed values are x1p and x2, as these two calculations are free of subtractive cancellations. The discriminant is of the same order as b since 4ac is an order of magnitude less than b and it's all under the square root, so x1 involves a subtraction of two terms that are of order b, as does x2p.
+
+**__List below up to three C++ lines from the code that you don't understand completely:__**
+
+I don't understand the use of `scientific` inside the print statements. I've never seen that before.
+
+**__Is the plot qualitatively and quantitatively consistent with the analysis in the notes? Explain in a few sentences.__**
+
+The plot makes sense qualitatively and quantitatively with the analysis in the notes. According to what was shown in the analysis, the absolute value of the relative error for a given root should be proportional to the absolute value of 1/c. Of course, this means that there should be roughly a straight line when plotting both relative errors against 1/c, as this means that the analysis is correct. The slope of this line is, of course $b^2/2a$ which is 2 in this case.
 
 
