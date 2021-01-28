@@ -38,39 +38,36 @@ using namespace std;		// we need this when .h is omitted
 
 //********************** begin main ******************************
 
-int
-main ()
-{
-  int num_eps = 1e8;	// number of times to add eps to 1 
-  float eps_sp = 5.e-8;		// single precision small increment 
-  double eps_dp = 5.e-8;	// double precision small increment 
+int main (){
+	int num_eps = 10000000;       // number of times to add eps to 1 
+	float eps_sp = 5.e-8;         // single precision small increment 
+	double eps_dp = 5.e-8;        // double precision small increment 
 
-  float sum_first_sp = 1.;	// adding 1 first (single precision) 
-  float sum_last_sp = 0.;	// adding 1 at the end (single precision) 
-  double sum_first_dp = 1.;	// adding 1 first (double precision) 
-  double sum_last_dp = 0.;	// adding 1 at the end (double precision) 
+	float sum_first_sp = 1.;      // adding 1 first (single precision) 
+	float sum_last_sp = 0.;       // adding 1 at the end (single precision) 
+	double sum_first_dp = 1.;     // adding 1 first (double precision) 
+	double sum_last_dp = 0.;      // adding 1 at the end (double precision) 
 
-  cout << endl << "Adding small numbers many times to a big number:"
-    << endl << endl;
+	cout << endl << "Adding small numbers many times to a big number:"
+	  << endl << endl;
 
-  // add small numbers (in single or double precision) num_eps times
-  for (int i = 0; i < num_eps; i++)
-    {
-      sum_first_sp += eps_sp;
-      sum_last_sp += eps_sp;
+	// add small numbers (in single or double precision) num_eps times
+	for (int i = 0; i < num_eps; i++) {
+		sum_first_sp += eps_sp;
+		sum_last_sp += eps_sp;
 
-      sum_first_dp += eps_dp;
-      sum_last_dp += eps_dp;
-    }
+		sum_first_dp += eps_dp;
+		sum_last_dp += eps_dp;
+	}
 
-  sum_last_sp += 1.;		// add 1 at the end
-  sum_last_dp += 1.;		// add 1 at the end
+	sum_last_sp += 1.;            // add 1 at the end
+	sum_last_dp += 1.;            // add 1 at the end
 
-  cout << "                   1+eps+eps+...  eps+eps+...+1  \n";
-  cout << "single precision:  " << fixed << setprecision (10) << setw (12)
-    << sum_first_sp << "   " << setw (12) << sum_last_sp << endl;
-  cout << "double precision:  " << fixed << setprecision (10) << setw (12)
-    << sum_first_dp << "   " << setw (12) << sum_last_dp << endl;
+	cout << "                   1+eps+eps+...  eps+eps+...+1  \n";
+	cout << "single precision:  " << fixed << setprecision (10) << setw (12)
+	  << sum_first_sp << "   " << setw (12) << sum_last_sp << endl;
+	cout << "double precision:  " << fixed << setprecision (10) << setw (12)
+	  << sum_first_dp << "   " << setw (12) << sum_last_dp << endl;
 
-  return (0);
+	return (0);
 }
