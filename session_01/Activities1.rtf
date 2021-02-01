@@ -1,0 +1,54 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2577
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Chalkduster;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;}
+\margl1440\margr1440\vieww13440\viewh7800\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 grade: check +
+\f1 \cf0 \
+\
+Using full names removes unnecessary ambiguity. Anyone on earth who's reading the code will understand what's being done with radius and area.\
+\
+Adding "endl" breaks the output line so that the output isn't running on the same line as the terminal prompt.\
+\
+The line with the error could still end up being correct as far as the compiler is concerned, it's only when it sees what's coming after that it knows that there's a problem.\
+\
+A simple check is to use a radius of 1 and ensure that the area is pi. This can then be scaled by 10 as we'd expect this to just shift the decimal point over by 2 places.\
+\
+I can use a predefined values of pi, make an inline square function, split the calculation off, and add checks to the input. \
+\
+First, Python doesn't need a main() function. Python also has input and print statements that are exactly what they sound like, and they're there by default instead of needing to be included with iostream. There's also no need for use of a particular namespace to use input/output commands in python. Python also seems to have the exponentiation operation built in.\
+\
+The output goes to a file called flows.out\
+\
+For floats, overflow occurs at 128 iterations for 2^n, while underflow happens at 150 iterations for 2^-n\
+For doubles, overflow happens at 1024 iterations for 2^n, while underflow happens at 1075 iterations for 2^-n\
+
+\f0 \cf2 Numerical values?
+\f1 \cf0 \
+\
+Machine precision for single-precision floating-point numbers is 6.2758e-08\
+Machine precision for double-precision floating-point numbers is 1.05298-16\
+Machine precision is the 'breaking point' below which numbers aren't changed by addition. \
+
+\f0 \cf2 More precisely, its the threshold value e_m where 1 + e_m = 1
+\f1 \cf0 \
+\
+The makefile for area.cpp did work, though it threw a warning. \
+\
+The makefile works for flows.cpp, I get the same warning.\
+\
+I can use the first graph on the Wiki page (Caption: Plot of bessel function of the first kind, ...) which has a number of places that I can roughly eyeball values at. For example, the trivial J0(0) = 1, J0(5) ~ -0.2, J0(15) ~ 0, J0(2.5) ~ 0. For more precise testing, I could iterate through a range of values that contains the point I estimate has a known value and see if I get the expected behavior of values. However, since my single point guesses prove sufficient to confirm the function, I'm not going to implement this. \
+\
+The correct answer is given for J0(5).\
+\
+I find that for x = 3, J0(x) = -0.260051954901933446\
+\
+I used python, the pre-existing J0_test.py from the zip file. I was successful in my calculation of the Bessel function at x = 3.0\
+\
+A more general program could take in user input (like the area calculation) to fix the x-value instead of including it as a variable in the code. We could also choose the order of the bessel function via user input. Depending on available software, it could alternatively be handy to specify a range of x-values and plot the bessel function of a given order over said range.\
+\
+\
+\
+}
