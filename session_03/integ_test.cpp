@@ -52,16 +52,16 @@ main ()
   // Simpson's rule requires an odd number of intervals  
   for (int i = 3; i <= max_intervals; i += 2)
   {
-    integ_out << setw(4) << i;
+    integ_out << setw(4) << log10(i);
 
     result = trapezoid_rule (i, lower, upper, &my_integrand);
-    integ_out << "  " << scientific << fabs (result - answer);
+    integ_out << "  " << scientific << log10(fabs (result - answer)/answer);
 
     result = simpsons_rule (i, lower, upper, &my_integrand);
-    integ_out << "  " << scientific << fabs (result - answer);
+    integ_out << "  " << scientific << log10(fabs (result - answer)/answer);
 
     result = gauss_quadrature (i, lower, upper, &my_integrand);
-    integ_out << "  " << scientific << fabs (result - answer);
+    integ_out << "  " << scientific << log10(fabs (result - answer)/answer);
 
     integ_out << endl;
   }
