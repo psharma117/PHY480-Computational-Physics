@@ -29,6 +29,10 @@ and then proceeding as before.
 
 I understand this code. It computes the central and forward difference approximations of the derivative of an exponential. Both of these are compared to the exact solution and the relative error of each is output to the file `derivative_test_simple.dat` along with the log of the mesh spacing in scientific notation to 8 digits of accuracy.
 
+### Make a graph with gnuplot with two plots: the logarithm of the relative error for forward difference vs. the logarithm of h (which is Delta-x) and the analogous plot for central difference. (Make sure you include a pdf, png, or ps of your plots when you turn in the activity sheet.)
+
+![Plots of Relative Error](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_03/derivative_test_simple.png)
+
 ### Are the slopes in each region consistent with the analysis of errors in the ch3 notes? Which is the better algorithm and why?
 
 These slopes are consistent with the analysis of errors from the notes. In both cases, at the smallest h, the derivatives exhibit the same behavior: eps_m/h. When h is too large for this to matter, the central difference algorithm wins out, proving to be much more accurate at every value of h before machine precision rears its head. The central difference also has a higher optimal value of h from looking at the plot, which agrees with the error analysis from the notes. 
@@ -52,15 +56,20 @@ The output file makes sense, the absolute errors decrease quite quickly in the b
 
 ### Use Gnuplot to reproduce the figure in Section 3d of the notes. Briefly explain what you can learn from the plot. I.e., are there different "regions" where the slopes are qualitatively different? If so, what does each region signify?
 
+![Plots of integral relative error](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_03/integ_test.png)
+
 Until about 20 intervals Simpson's rule has a definite downward slope on the log plot. I think this is roughly -4 as expected, but it's hard to be sure without grid lines. Around 20 intervals, the slope just becomes 0 with some noise, as subtractive cancellations start to occur. Gauss quad is a champ and doesn't really vary much with number of intervals until larger numbers of intervals are used and (I assume) the same subtractive cancellations are met. Trapezoid rule stays at a consistent slope because it takes significantly longer to reach the values that would allow for subtractive cancellations to occur, resulting in a fairly uniform line going down with a slope of -2. 
 
 ### Change the loop in integ_test.cpp so that the points on the log-log plot are evenly spaced. What did you change?
 
 All I had to change was the way the number of intervals increments: I changed `i+=2` to `i*=2` so that the number of intervals grew exponentially which translates to a straight line on a log scale.
 
+![Evenly spaced plot](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_03/even_integ_test.png)
+
 ### What are the slopes of the trapezoid and Simpson's rule plots in the regions where they are linear?
 
-The slope of the trapezoid plot is -2.09 with less than 1% error in the region where it's linear. The slope of the Simpson plot is -4.467 with about 2% error in the region where it's linear.
+The slope of the trapezoid plot is -2.09 with less than 1% error in the region where it's linear. The slope of the Simpson plot is -4.467 with about 2% error in the region where it's linear. On the plot, I made a typo in the key with the slope of the trapezoid fit, but I didn't notice this till it was too late.
+![Plots of fits to error on log scale](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_03/fit_integ_test.png)
 
 ### Are the slopes consistent with the analysis in the text? Now try to fit the round-off error region and interpret the "slope".
 
