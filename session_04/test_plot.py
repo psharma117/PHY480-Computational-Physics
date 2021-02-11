@@ -14,7 +14,8 @@ popt, pcov = curve_fit(f, x, y)
 print(popt)
 a = popt[0]
 b = popt[1]
-plt.plot(x, f(x, a, b), color='red', label='fit')
+fit_label = 'fit: ' + str(np.format_float_scientific(a,precision=3)) + '*x^' + str(np.format_float_scientific(b, precision=3))
+plt.plot(x, f(x, a, b), color='red', label=fit_label)
 plt.title('Time taken to diagonalize an NxN Hilbert Matrix')
 plt.xlabel('N (side length of matrix)')
 plt.ylabel('Time taken(s)')
