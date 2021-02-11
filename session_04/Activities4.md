@@ -1,7 +1,7 @@
 ## Numerical Derivatives and Richardson Extrapolation
 ### Edit the plot file to add the corresponding plots and fits for the central derivative and extrapolated central derivative approximations. Sketch the plot here and also generate a ps,png or pdf.
 
-![Derivative plot](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_04/derivative_test_plt.png)
+![Derivative plot](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_04/derivative_test_plt.png) 
 
 ### In Session 3, you saw the functions forward_diff and central_diff (notice that the function name is passed as a pointer). Explain the slope of the extrap_diff graph (see the discussion in the Session 4 notes).
 The error for the Richardson extrapolated central difference goes as h^4 now, and we're plotting on a log-log scale. So log(error) = log(h^4) = 4log(h) which means the slope should be 4.
