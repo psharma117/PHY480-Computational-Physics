@@ -62,105 +62,104 @@ int
 main ()
 {
   // Choose Rmax (maximum radius)
-  double Rmax = 5.;
-  cout << "Enter maximum radius (Rmax): ";
-  cin >> Rmax;
+/*
+ *  double Rmax = 5.;
+ *  cout << "Enter maximum radius (Rmax): ";
+ *  cin >> Rmax;
+ *
+ *  // Pick the value of the number of steps N 
+ *  int N = 0;		
+ *  cout << "Enter the number of steps (N): ";
+ *  cin >> N;
+ */
+	double Rmax = 6.;
+	ofstream eigout ("eigen_tridiagonal.dat");  // open an output file
+	eigout << "#N      Eigval" << endl;
+	for (int N = 4; N<=1024; N*=2){
+		
+	  // The matrix dimension is N-1 (see the notes).
+	  int dimension = N-1;
+	  
+	  double h = Rmax/double(N);
+	  double hsq = sqr(h);
 
-  // Pick the value of the number of steps N 
-  int N = 0;		
-  cout << "Enter the number of steps (N): ";
-  cin >> N;
-  // The matrix dimension is N-1 (see the notes).
-  int dimension = N-1;
-  
-  // Calculate h = Delta x
-  double h = Rmax/double(N);
-  double hsq = sqr(h);
+	  gsl_matrix *Hmat_ptr = gsl_matrix_alloc (dimension, dimension); 
+								   // gsl vector with eigenvalues 
+	  gsl_vector *Eigval_ptr = gsl_vector_alloc (dimension);	
+								   // gsl matrix with eigenvectors 
+	  gsl_matrix *Eigvec_ptr = gsl_matrix_alloc (dimension, dimension);	
+								   // the workspace for gsl 
+	  gsl_eigen_symmv_workspace *worksp= gsl_eigen_symmv_alloc (dimension);	
 
-  // See the GSL documentation for matrix, vector structures 
-  //  Define and allocate space for the vectors, matrices, and workspace 
-                               // original gsl matrix with Hamiltonian 
-  gsl_matrix *Hmat_ptr = gsl_matrix_alloc (dimension, dimension); 
-                               // gsl vector with eigenvalues 
-  gsl_vector *Eigval_ptr = gsl_vector_alloc (dimension);	
-                               // gsl matrix with eigenvectors 
-  gsl_matrix *Eigvec_ptr = gsl_matrix_alloc (dimension, dimension);	
-                               // the workspace for gsl 
-  gsl_eigen_symmv_workspace *worksp= gsl_eigen_symmv_alloc (dimension);	
+	  for (int i = 1; i <= dimension; i++)
+	  {
+		for (int j = 1; j <= dimension; j++)
+		{
+		  double Hij;
+		  if (i == j)                  // diagonal matrix element
+		  {
+			double r = double(i)*h;
+			Hij = 2./hsq + V_ho(r); 
+		  }
+		  else if (i == j+1)          // just above the diagonal
+		  {
+			Hij = -1./hsq;
+		  }
+		  else if (i == j-1)          // just below the diagonal
+		  {
+			Hij = -1./hsq;
+		  }
+		  else                        // all the other elements
+		  {
+			Hij = 0.;                 
+		  }
+	 
+		  gsl_matrix_set (Hmat_ptr, i-1, j-1, Hij);  // set the i-1,j-1 element
+		}
+	  }
 
-  // Load the Hamiltonian matrix pointed to by Hmat_ptr
-  //  The elements are labeled from 1 to N-1, but stored from 0 to N-2  
-  for (int i = 1; i <= dimension; i++)
-  {
-    for (int j = 1; j <= dimension; j++)
-    {
-      double Hij;
-      if (i == j)                  // diagonal matrix element
-      {
-        double r = double(i)*h;
-        Hij = 2./hsq + V_ho(r); 
-      }
-      else if (i == j+1)          // just above the diagonal
-      {
-        Hij = -1./hsq;
-      }
-      else if (i == j-1)          // just below the diagonal
-      {
-        Hij = -1./hsq;
-      }
-      else                        // all the other elements
-      {
-        Hij = 0.;                 
-      }
- 
-      gsl_matrix_set (Hmat_ptr, i-1, j-1, Hij);  // set the i-1,j-1 element
-    }
-  }
+	  gsl_eigen_symmv (Hmat_ptr, Eigval_ptr, Eigvec_ptr, worksp);
 
-  // Find the eigenvalues and eigenvectors of the real, symmetric
-  //  matrix pointed to by Hmat_ptr.  It is partially destroyed
-  //  in the process. The eigenvectors are pointed to by 
-  //  Eigvec_ptr and the eigenvalues by Eigval_ptr.
-  gsl_eigen_symmv (Hmat_ptr, Eigval_ptr, Eigvec_ptr, worksp);
+	  gsl_eigen_symmv_sort (Eigval_ptr, Eigvec_ptr, GSL_EIGEN_SORT_VAL_ASC);
 
-  // Sort the eigenvalues and eigenvectors in ascending order 
-  gsl_eigen_symmv_sort (Eigval_ptr, Eigvec_ptr, GSL_EIGEN_SORT_VAL_ASC);
+	  // Print out the results   
+	  // Allocate a pointer to one of the eigenvectors of the matrix 
+	  gsl_vector *eigenvector_ptr = gsl_vector_alloc (dimension);	
 
-  // Print out the results   
-  // Allocate a pointer to one of the eigenvectors of the matrix 
-  gsl_vector *eigenvector_ptr = gsl_vector_alloc (dimension);	
-  for (int i = 1; i <= dimension; i++)
-  {
-    gsl_matrix_get_col (eigenvector_ptr, Eigvec_ptr, i-1);
-    double eigenvalue = gsl_vector_get (Eigval_ptr, i-1);
+	  double eigenvalue = gsl_vector_get (Eigval_ptr, 0);
+	  eigout << log10(N) << "    " << log10(fabs(eigenvalue - 1.5)/1.5) << endl;
+/*
+ *      for (int i = 1; i <= dimension; i++)
+ *      {
+ *        gsl_matrix_get_col (eigenvector_ptr, Eigvec_ptr, i-1);
+ *        double eigenvalue = gsl_vector_get (Eigval_ptr, i-1);
+ *
+ *
+ *        // Print out the eigenvector with the lowest eigenvalue to a file
+ *        if (i == 1)
+ *        {
+ *          eigout << "# 3D harmonic oscillator" << endl;
+ *          eigout << "# eigenvalue = " << scientific << eigenvalue << endl;
+ *          eigout << endl << "#   r       u(r)" << endl;
+ *          for (int j = 1; j <= dimension; j++)
+ *          {
+ *            eigout << fixed << double(j)*h << " "
+ *             << scientific << gsl_vector_get (eigenvector_ptr, j-1) << endl;
+ *          }
+ *          eigout.close();  // close the output stream
+ *        }
+ *      }
+ */
+	  gsl_matrix_free (Eigvec_ptr);
+	  gsl_vector_free (Eigval_ptr);
+	  gsl_matrix_free (Hmat_ptr);
+	  gsl_vector_free (eigenvector_ptr);
+	  gsl_eigen_symmv_free (worksp);
 
-	if (i < 4){
-		cout << "eigenvalue " << i << " = " 
-			 << scientific << eigenvalue << endl;
 	}
-
-    // Print out the eigenvector with the lowest eigenvalue to a file
-    if (i == 1)
-    {
-      ofstream eigout ("eigen_tridiagonal.dat");  // open an output file
-      eigout << "# 3D harmonic oscillator" << endl;
-      eigout << "# eigenvalue = " << scientific << eigenvalue << endl;
-      eigout << endl << "#   r       u(r)" << endl;
-      for (int j = 1; j <= dimension; j++)
-      {
-        eigout << fixed << double(j)*h << " "
-	     << scientific << gsl_vector_get (eigenvector_ptr, j-1) << endl;
-      }
-      eigout.close();  // close the output stream
-    }
-  }
+	eigout.close();
 
   // free the space used by the vector and matrices and workspace 
-  gsl_matrix_free (Eigvec_ptr);
-  gsl_vector_free (Eigval_ptr);
-  gsl_matrix_free (Hmat_ptr);
-  gsl_vector_free (eigenvector_ptr);
-  gsl_eigen_symmv_free (worksp);
 
   return (0);			// successful completion 
 }

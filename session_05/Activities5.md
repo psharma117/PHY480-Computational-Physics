@@ -21,7 +21,12 @@ At r=0, the radial wavefunction should be 0. This way, we get a Gaussian when co
 
 ### You need to pick a reasonable value of Rmax. Justify your choice based on the eigen_tridiagonal.dat plot:
 
-I chose Rmax = 6, as this fully displays the Gaussian tail of the wavefunction.
+I chose Rmax = 6, as this fully displays the Gaussian tail of the wavefunction. I think this suitably captures all relevant behavior of the wavefunction to a reasonable degree. 
 
+### For your choice of Rmax, try N = 4,8,16,32,64,128,256,512,1024 (you could add a loop to calculate these). How does the relative error for the lowest eigenvalue scale with N? Sketch the plot to validate your answer.
 
+The relative error scales roughly as N^-2
+
+### Explain the slope you found based on the approximation to the second derivative.
+The slope corresponds to the truncation error of the finite difference method used here: the error is O(h^2) and that's what we see here on the log-log plot for decreasing h. 
 
