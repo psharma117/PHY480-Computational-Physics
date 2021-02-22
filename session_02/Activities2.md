@@ -1,3 +1,5 @@
+
+### Grade: Check + 
 ### Might we care about formatting?
 
 Formatting is what makes code readable. Poorly formatted code can make it difficult to understand the scope of variables or general statements of code, whether it's in a loop or a function or something else. This makes it far easier for errors to happen when editing the code.
@@ -41,13 +43,13 @@ I don't understand the use of `scientific` inside the print statements. I've nev
 
 The plot makes sense qualitatively and quantitatively with the analysis in the notes. According to what was shown in the analysis, the absolute value of the relative error for a given root should be proportional to the absolute value of 1/c. Of course, this means that there should be roughly a straight line when plotting both relative errors against 1/c, as this means that the analysis is correct. The slope of this line is, of course $b^2/2a$ which is 2 in this case.
 
-### If you add 1 + a + a + ... in single precision, what do you expect to get for the total? What do you get when you carry it out? 
+### If you add 1 + a + a + ... in single precision, what do you expect to get for the total? What do you get when you carry it out?
 
 I expect that adding 1 + a + a ... all the way down in single precision will return 1 since a is below machine precision and sufficiently small compared to 1. Carrying out the experiment verified this - I got 1.0 when adding a repeatedly to 1.
 
 ### If, instead, you add a + a + ... + 1 in single precision, do you expect a different answer? Which will be closer to the exact answer, the first way of summing or the 2nd way?
 
-I expect a different answer in this order of addition, since a isn't being added to something with as large a difference in the order of magnitude til it's much closer to order 1, so I think that this order will yield a closer answer. Carrying out the experiment, I see that this is correct, with an end result that's roughly .03 above the expected value instead of 0.5 below it. 
+I expect a different answer in this order of addition, since a isn't being added to something with as large a difference in the order of magnitude til it's much closer to order 1, so I think that this order will yield a closer answer. Carrying out the experiment, I see that this is correct, with an end result that's roughly .03 above the expected value instead of 0.5 below it.
 
 ### If you repeat the exercise in double precision, what do you expect will happen? Now actually perform the double precision calculation. Does it agree with your expectations?
 
@@ -76,15 +78,15 @@ print('Double precision, 1 last: ', dp_addition_last)
 
 ### Write a brief "pseudocode" here for a program that would compare these two ways of summing. Then look at the file order_of_summation1a.cpp in an editor; does it look like an implementation of your pseudocode?
 
-The logic behind the pseudocode and the code in `order_of_summation1a.cpp` is pretty close. I see minor differences like the order in which things were computed in the loop which won't matter. 
+The logic behind the pseudocode and the code in `order_of_summation1a.cpp` is pretty close. I see minor differences like the order in which things were computed in the loop which won't matter.
 
 ### Challenge: Predict the results for 10^8 additions (instead of 10^7):
 
 I suspect that adding 1 + a ... in single precision will still be 1, but a + a + ... 1 will be roughly 6. I also expect both double precision calculations to yield a number very close to 6.
 
-### Now change the code, and see if your prediction is correct (or that you can explain it after the fact). 
+### Now change the code, and see if your prediction is correct (or that you can explain it after the fact).
 
-My predictions for double precision were correct, however my prediction for the reverse order addition in single precision was wrong. Added up, I got 2 instead of roughly 6, which can be explained by noting that adding a to itself enough times gives 1 and anything past 1 will yield 1 since we're adding numbers below machine precision. So the summation over a will in total yield 1, which we add 1 to at the end to get 2. 
+My predictions for double precision were correct, however my prediction for the reverse order addition in single precision was wrong. Added up, I got 2 instead of roughly 6, which can be explained by noting that adding a to itself enough times gives 1 and anything past 1 will yield 1 since we're adding numbers below machine precision. So the summation over a will in total yield 1, which we add 1 to at the end to get 2.
 
 ### If you run bessel.cpp, you'll generate a data file "bessel.dat". By looking at the code, figure out what the columns in the file mean. What Bessel function is being output? What are the columns?
 
@@ -93,4 +95,3 @@ A 10th order spherical bessel function of the first kind (so not a spherical Neu
 ### Print out your plot.
 
 ![Plots of j_10](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_02/bessels-up-down.png)
-
