@@ -20,7 +20,7 @@ My CPU has 4 cores, 8 threads with multithreading.
 
 The integration for different values of `k` is done in parallel. 
 
-### Let's compare using one and two threads. There is a built-in timer in the program, but run the program with time ./simpson_cosint_openmp, which will automatically print some timing info on the cpu time and the wall time after you run the program. Compile the program with g++ following the instructions in the comments, and then run it. Record the "num_time", the CPU time, and the wall time. (In tcsh, these are the first and third numbers; in bash, these are the second and first numbers.) 
+### Let's compare using one and two threads. There is a built-in timer in the program, but run the program with `time ./simpson_cosint_openmp`, which will automatically print some timing info on the cpu time and the wall time after you run the program. Compile the program with g++ following the instructions in the comments, and then run it. Record the "num_time", the CPU time, and the wall time. (In tcsh, these are the first and third numbers; in bash, these are the second and first numbers.) 
 
 With 2 threads, `num_time` is 2.54663s, CPU time is 5.007s, wall time is 2.575s
 
@@ -35,4 +35,18 @@ I think CPU time is about the same because it's not actual time, it's like "man-
 With 8 threads, `num_time` is 0.846712, CPU time is 6.392, wall time is 0.877s
 
 The ratio `num_time2/num_time1` (these aren't variables I added, just my shorthand for the calculation) is 0.508, while the ratio `num_time8/num_time2` is 0.332. The first ratio is close enough to the expectation of 0.5, but the second is fairly far off. I think scaling isn't quite right because the CPU can't be completely given over to the calculation, it's also busy processing everything else that's going on in the background on my machine, such as background processes for the OS to function and applications like the Zoom call. 
+
+### Use `make_diffeq_test` to compile and link `diffeq_test`. Run the program to generate `diffeq_test.dat` and look at it in an editor. The gnuplot plotfile `diffeq_test.plt` generates comparison plots of the integrated function from the output in `diffeq_test.out.` Load this plotfile in gnuplot:
+`gnuplot> load "diffeq_test.plt"`
+and examine the result. What can you conclude at this point?
+
+I can conclude that Euler is noticeably worse than RK4, which looks pretty much exactly like the exact solution with the plot at this scale. I know that RK4 actually has error of order h^4, but the deviation is too small to see appreciably on this default plot. 
+
+### Look at the printout for diffeq_test.cpp and diffeq_routines.cpp and compare to the Activities 6 notes to figure out what is going on. The codes follow the notation in the notes. At present there is only one equation (first-order), so only y[0] is used. What is the differential equation being integrated?
+
+The differential equation being integrated is y' = -aty.
+
+Modify the diffeq_test.plt file to plot the relative error at each value of t. (Modify the plot file and NOT the program; see the gnuplot handout on plot files for an example of how to do this.) As usual in studying errors, a log-log scale will be useful. The first point at t=0 may get in the way. Use "set xrange [?:?]" in gnuplot (where you fill in the ?'s) to avoid this problem. What can you say qualitatively about the errors?
+
+I was curious about what gnuplot would do if I didn't mess with `xrange` so I first tried plotting it without modifying it and got no errors. Qualitatively then, I can say that the RK4 error noticeably drops off faster and lower than Euler, before both eventually succumbed to roundoff error. 
 
