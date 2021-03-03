@@ -1,56 +1,55 @@
-//  file: eigen_basis.cpp
-// 
-//  Program to find bound state eigenvalues for various potentials
-//   by diagonalizing the Hamiltonian using the GSL eigenvalue/eigenvector 
-//   routines in a truncated harmonic oscillator basis.
-//
-//  Programmer:  Dick Furnstahl  furnstahl.1@osu.edu
-//
-//  Revision history:
-//      01/24/04  original version, translated from eigen_basis.c 
-//      01/20/06  rearranged code to make it clearer
-//
-//  Notes:
-//   * Based on the documentation for the GSL library under
-//      "Eigensystems" and on Chap. 15 of "Computational Physics"
-//      by Landau and Paez.
-//   * Uses the GSL functions for computing eigenvalues
-//      and eigenvectors of matrices.  The steps for this part are:
-//       * define and allocate space for matrices and vectors we need
-//       * load the matrix to be diagonalized (pointed to by Hmat_ptr)
-//       * find the eigenvalues and eigenvectors with gsl_eigensymmv
-//       * sort the results numerically 
-//       * print out the results  
-//   * As a convention (advocated in "Practical C++"), we'll append
-//      "_ptr" to all pointers.
-//   * When sorting eigenvalues,
-//      GSL_EIGEN_SORT_VAL_ASC => ascending order in numerical value 
-//      GSL_EIGEN_SORT_VAL_DESC => descending order in numerical value 
-//      GSL_EIGEN_SORT_ABS_ASC => ascending order in magnitude 
-//      GSL_EIGEN_SORT_ABS_DESC => descending order in magnitude
-//   * We use gls_integration_qagiu for the integrals from
-//      0 to Infinity (calculating matrix elements of H).
-//   * Start with l=0 (and generalize later)
-//
-//  To do:
-//   * Add the Morse potential (function is given but not incorporated)
-//   * Generalize to l>0.
-//   * Make potential selection less kludgy.
-//   * Improve efficiency (reduce run time)
-//   * Split into more files (?) or convert to classes
-//
-///******************************************************************
+  /*file: eigen_basis.cpp
+ 
+  Program to find bound state eigenvalues for various potentials
+   by diagonalizing the Hamiltonian using the GSL eigenvalue/eigenvector 
+   routines in a truncated harmonic oscillator basis.
 
-// include files
+  Programmer:  Dick Furnstahl  furnstahl.1@osu.edu
+
+  Revision history:
+	  01/24/04  original version, translated from eigen_basis.c 
+	  01/20/06  rearranged code to make it clearer
+
+  Notes:
+   * Based on the documentation for the GSL library under
+	  "Eigensystems" and on Chap. 15 of "Computational Physics"
+	  by Landau and Paez.
+   * Uses the GSL functions for computing eigenvalues
+	  and eigenvectors of matrices.  The steps for this part are:
+	   * define and allocate space for matrices and vectors we need
+	   * load the matrix to be diagonalized (pointed to by Hmat_ptr)
+	   * find the eigenvalues and eigenvectors with gsl_eigensymmv
+	   * sort the results numerically 
+	   * print out the results  
+   * As a convention (advocated in "Practical C++"), we'll append
+	  "_ptr" to all pointers.
+   * When sorting eigenvalues,
+	  GSL_EIGEN_SORT_VAL_ASC => ascending order in numerical value 
+	  GSL_EIGEN_SORT_VAL_DESC => descending order in numerical value 
+	  GSL_EIGEN_SORT_ABS_ASC => ascending order in magnitude 
+	  GSL_EIGEN_SORT_ABS_DESC => descending order in magnitude
+   * We use gls_integration_qagiu for the integrals from
+	  0 to Infinity (calculating matrix elements of H).
+   * Start with l=0 (and generalize later)
+
+  To do:
+   * Add the Morse potential (function is given but not incorporated)
+   * Generalize to l>0.
+   * Make potential selection less kludgy.
+   * Improve efficiency (reduce run time)
+   * Split into more files (?) or convert to classes*/
+
+//******************************************************************
+
 #include <iostream>		// note that .h is omitted
 #include <iomanip>		// note that .h is omitted
 #include <cmath>
+#include <fstream>
 using namespace std;
 
 #include <gsl/gsl_eigen.h>	        // gsl eigensystem routines
 #include <gsl/gsl_integration.h>	// gsl integration routines
 
-// structures and function prototypes 
 typedef struct			// structure holding Hij parameters 
 {
   int i;			// 1st matrix index 
@@ -69,7 +68,6 @@ typedef struct			// structure holding potential parameters
 }
 potential_parameters;
 
-// potentials 
 double V_coulomb (double r, potential_parameters * potl_params_ptr);
 double V_square_well (double r, potential_parameters * potl_params_ptr);
 double V_morse (double r, potential_parameters * potl_params_ptr);
@@ -82,7 +80,6 @@ double Hij_integrand (double x, void *params_ptr);
 extern double ho_radial (int n, int l, double b_ho, double r);
 extern double ho_eigenvalue (int n, int l, double b_ho, double mass);
 
-// to square double precision numbers
 inline double sqr (double x)  {return x*x;}
 
 //************************** main program ***************************
@@ -92,88 +89,98 @@ main ()
   hij_parameters ho_parameters;  // parameters for the Hamiltonian
 
   // pick the potential based on the integer "answer" 
-  int answer = 0;
-  while (answer != 1 && answer != 2)	// don't quit until 1 or 2!
+  int answer = 2;
+  /*while (answer != 1 && answer != 2)	// don't quit until 1 or 2!
     {
       cout << "Enter 1 for Coulomb or 2 for square well potential: ";
       cin >> answer;
-    }
+    }*/
   ho_parameters.potential_index = answer;
 
   // Set up the harmonic oscillator basis 
-  double b_ho;			// ho length parameter 
-  cout << "Enter the oscillator parameter b: ";
-  cin >> b_ho;
+  double b_ho = 0.2;			// ho length parameter 
+  double mass = 1;
+  //cout << "Enter the oscillator parameter b: ";
+  ofstream out ("ground_state_energy.dat");
+  out << "#b        gse" << endl;
+  for (int dimension = 4; dimension < 45; dimension+= 2){
+	  ho_parameters.mass = mass;    
+	  ho_parameters.b_ho = b_ho;
 
-  double mass = 1;		 // measure mass in convenient units 
-  ho_parameters.mass = mass;    
-  ho_parameters.b_ho = b_ho;
+	  // pick the dimension of the basis (matrix) 
+	  //int dimension = 15;		// dimension of the matrices and vectors 
+	  /*cout << "Enter the dimension of the basis: ";
+	  cin >> dimension;*/
 
-  // pick the dimension of the basis (matrix) 
-  int dimension;		// dimension of the matrices and vectors 
-  cout << "Enter the dimension of the basis: ";
-  cin >> dimension;
+	  // See the GSL documentation for matrix, vector structures 
+	  //  Define and allocate space for the vectors, matrices, and workspace 
+								   // original gsl matrix with Hamiltonian 
+	  gsl_matrix *Hmat_ptr = gsl_matrix_alloc (dimension, dimension); 
+								   // gsl vector with eigenvalues 
+	  gsl_vector *Eigval_ptr = gsl_vector_alloc (dimension);	
+								   // gsl matrix with eigenvectors 
+	  gsl_matrix *Eigvec_ptr = gsl_matrix_alloc (dimension, dimension);	
+								   // the workspace for gsl 
+	  gsl_eigen_symmv_workspace *worksp= gsl_eigen_symmv_alloc (dimension);	
 
-  // See the GSL documentation for matrix, vector structures 
-  //  Define and allocate space for the vectors, matrices, and workspace 
-                               // original gsl matrix with Hamiltonian 
-  gsl_matrix *Hmat_ptr = gsl_matrix_alloc (dimension, dimension); 
-                               // gsl vector with eigenvalues 
-  gsl_vector *Eigval_ptr = gsl_vector_alloc (dimension);	
-                               // gsl matrix with eigenvectors 
-  gsl_matrix *Eigvec_ptr = gsl_matrix_alloc (dimension, dimension);	
-                               // the workspace for gsl 
-  gsl_eigen_symmv_workspace *worksp= gsl_eigen_symmv_alloc (dimension);	
+	  // Load the Hamiltonian matrix pointed to by Hmat_ptr 
+	  for (int i = 0; i < dimension; i++)
+		{
+		  for (int j = 0; j < dimension; j++)
+		{
+		  ho_parameters.i = i;
+		  ho_parameters.j = j;
+		  gsl_matrix_set (Hmat_ptr, i, j, Hij (ho_parameters));
+		  // print statement for debugging 
+		  //cout << "i = " << i << ", j = " << j
+			//<< ", Hij = " << Hij (ho_parameters) << endl;
+		}
+		}
 
-  // Load the Hamiltonian matrix pointed to by Hmat_ptr 
-  for (int i = 0; i < dimension; i++)
-    {
-      for (int j = 0; j < dimension; j++)
-	{
-	  ho_parameters.i = i;
-	  ho_parameters.j = j;
-	  gsl_matrix_set (Hmat_ptr, i, j, Hij (ho_parameters));
-	  // print statement for debugging 
-	  cout << "i = " << i << ", j = " << j
-	    << ", Hij = " << Hij (ho_parameters) << endl;
-	}
-    }
+	  // Find the eigenvalues and eigenvectors of the real, symmetric
+	  //  matrix pointed to by Hmat_ptr.  It is partially destroyed
+	  //  in the process. The eigenvectors are pointed to by 
+	  //  Eigvec_ptr and the eigenvalues by Eigval_ptr.
+	  gsl_eigen_symmv (Hmat_ptr, Eigval_ptr, Eigvec_ptr, worksp);
 
-  // Find the eigenvalues and eigenvectors of the real, symmetric
-  //  matrix pointed to by Hmat_ptr.  It is partially destroyed
-  //  in the process. The eigenvectors are pointed to by 
-  //  Eigvec_ptr and the eigenvalues by Eigval_ptr.
-  gsl_eigen_symmv (Hmat_ptr, Eigval_ptr, Eigvec_ptr, worksp);
+	  // Sort the eigenvalues and eigenvectors in ascending order 
+	  gsl_eigen_symmv_sort (Eigval_ptr, Eigvec_ptr, GSL_EIGEN_SORT_VAL_ASC);
 
-  // Sort the eigenvalues and eigenvectors in ascending order 
-  gsl_eigen_symmv_sort (Eigval_ptr, Eigvec_ptr, GSL_EIGEN_SORT_VAL_ASC);
+	  // Print out the results   
+	  // Allocate a pointer to one of the eigenvectors of the matrix 
+	  gsl_vector *eigenvector_ptr = gsl_vector_alloc (dimension);	
+	  for (int i = 0; i < dimension; i++)
+		{
+		  double eigenvalue = gsl_vector_get (Eigval_ptr, i);
+		  gsl_matrix_get_col (eigenvector_ptr, Eigvec_ptr, i);
 
-  // Print out the results   
-  // Allocate a pointer to one of the eigenvectors of the matrix 
-  gsl_vector *eigenvector_ptr = gsl_vector_alloc (dimension);	
-  for (int i = 0; i < dimension; i++)
-    {
-      double eigenvalue = gsl_vector_get (Eigval_ptr, i);
-      gsl_matrix_get_col (eigenvector_ptr, Eigvec_ptr, i);
+		  /*cout << "eigenvalue " << i+1 << " = " 
+			   << scientific << eigenvalue << endl;*/
+		  if (i==0){
+			  cout << dimension << "    " << scientific << fabs(-45.9321 - eigenvalue)/45.9321 << endl;
+			  out << dimension << "    " << scientific << fabs(-45.9321 - eigenvalue)/45.9321 << endl;
+		  }
 
-      cout << "eigenvalue " << i+1 << " = " 
-           << scientific << eigenvalue << endl;
+		  // Don't print the eigenvectors yet . . .
+		  // cout << "eigenvector = " << endl;
+		  // for (j = 0; j < dimension; j++)
+		  // {
+		  //   cout << scientific << gsl_vector_get (eigenvector_ptr, j) << endl;
+		  // }
 
-      // Don't print the eigenvectors yet . . .
-      // cout << "eigenvector = " << endl;
-      // for (j = 0; j < dimension; j++)
-      // {
-      //   cout << scientific << gsl_vector_get (eigenvector_ptr, j) << endl;
-      // }
+		}
+	  gsl_matrix_free (Eigvec_ptr);
+	  gsl_vector_free (Eigval_ptr);
+	  gsl_matrix_free (Hmat_ptr);
+	  gsl_vector_free (eigenvector_ptr);
+	  gsl_eigen_symmv_free (worksp);
+  }
+  out.close();
+  //cin >> b_ho;
 
-    }
+  //double mass = 1;		 // measure mass in convenient units 
 
   // free the space used by the vector and matrices  and workspace 
-  gsl_matrix_free (Eigvec_ptr);
-  gsl_vector_free (Eigval_ptr);
-  gsl_matrix_free (Hmat_ptr);
-  gsl_vector_free (eigenvector_ptr);
-  gsl_eigen_symmv_free (worksp);
 
   return (0);			// successful completion 
 }
