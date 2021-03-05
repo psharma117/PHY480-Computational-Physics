@@ -17,6 +17,7 @@ I suspect that this will still return `inf`. Upon running the code, I was wrong.
 ### Change the code so that only the lowest few eigenvalues are printed out. Look at the output file eigen_tridiagonal.dat and plot it with gnuplot. Sketch your plot. What is this function? The value at r=0 is not given; what should it be?
 
 ![Wavefunction plot](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_05/ground_state_oscillator.png)
+
 At r=0, the radial wavefunction should be 0. This way, we get a Gaussian when considering the full wavefunction, with no singularities at the origin. 
 
 ### You need to pick a reasonable value of Rmax. Justify your choice based on the eigen_tridiagonal.dat plot:
@@ -24,6 +25,8 @@ At r=0, the radial wavefunction should be 0. This way, we get a Gaussian when co
 I chose Rmax = 6, as this fully displays the Gaussian tail of the wavefunction. I think this suitably captures all relevant behavior of the wavefunction to a reasonable degree. 
 
 ### For your choice of Rmax, try N = 4,8,16,32,64,128,256,512,1024 (you could add a loop to calculate these). How does the relative error for the lowest eigenvalue scale with N? Sketch the plot to validate your answer.
+
+![gse error](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_05/gse_error.png)
 
 The relative error scales roughly as N^-2
 
@@ -47,7 +50,11 @@ The square well potential is more effectively calculated with this basis. I thin
 
 I can find the optimum b by plotting the relative error in the ground state energy vs b. Using gnuplot (see below), I find that b = 0.2 works pretty well. The ground state wavefunction for the square well goes to 0 in a different manner compared to the harmonic oscillator wavefunction, the exponential tails don't behave quite the same. The harmonic oscillator parameter controls the width of the (normalized) wavefunction through the width of the well that the wavefunction is a solution to. Narrowing the wavefunctions used allows for an estimate that's closer to the actual square well wavefunction. 
 
+![gse vs b](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_05/gse_vs_b.png)
+
 ### If you now fix b (if you have time you can consider two or three different values in turn), how can you find how the accuracy of the ground state energy scales with the basis size? Make an appropriate plot.
+
+![gse vs n](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_05/gse_vs_dim.png)
 
 Plotting the relative error vs basis dimension shows a roughly linear plot for larger N, so I could fit a power law to at least that region to find the scaling law. I find that the error scales like the dimension^2. 
 
