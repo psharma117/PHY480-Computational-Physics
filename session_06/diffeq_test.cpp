@@ -4,14 +4,7 @@
 //
 //  Programmer:  Dick Furnstahl  furnstahl.1@osu.edu
 //
-//  Revision history:
-//      02/07/04  original version, translated from diffeq_test.c
-//      01/30/05  comments improved and function names changed
-//      01/22/06  improved code organization
-//
 //  Notes:
-//   * Based on the discussion of differential equations in Chap. 9
-//      of "Computational Physics" by Landau and Paez
 //   * As a convention (advocated in "Practical C++"), we'll append
 //      "_ptr" to all pointers.
 //
@@ -30,95 +23,88 @@ double rhs (double t, double y[], int i, void *params_ptr);
 double exact_answer (double t, void *params_ptr);
 
 // structures
-typedef struct			// define a type to hold parameters 
-{
-  double alpha;
-  double beta;
+typedef struct{
+	double alpha;
+	double beta;
 }
 f_parameters;			// now we can define a structure of this type
 				//   using the keyword "f_parameters" 
 
 //************************** main program ****************************
-int
-main (void)
-{
-  void *params_ptr;		   // void pointer passed to functions 
-  f_parameters funct_parameters;   // parameters for the function 
+int main (void) {
+	void *params_ptr;		   // void pointer passed to functions 
+	f_parameters funct_parameters;   // parameters for the function 
 
-  const int N = 1;		// size of arrays of y functions
-  double y_euler[N], y_rk4[N];	// arrays of y functions 
+	const int N = 1;		// size of arrays of y functions
+	double y_euler[N], y_rk4[N];	// arrays of y functions 
 
-  ofstream out ("diffeq_test.dat");	// open the output file 
+	funct_parameters.alpha = 1.;	// function parameter to be passed 
+	funct_parameters.beta = 1.;	// function parameter to be passed
+	params_ptr = &funct_parameters;	// structure to pass to function 
 
-  funct_parameters.alpha = 1.;	// function parameter to be passed 
-  funct_parameters.beta = 1.;	// function parameter to be passed
-  params_ptr = &funct_parameters;	// structure to pass to function 
+	y_euler[0] = 1.0;		// initial condition for y(t) 
+	y_rk4[0] = 1.0;		// initial condition for y(t) 
+/*
+	ofstream out ("diffeq_test.dat");	// open the output file 
+	out << "#      t           y_euler(t)         y_rk4(t)        y_exact(t) \n";
+	out << scientific << setprecision (9)
+		<< tmin << "  "
+		<< y_euler[0] << "  "
+		<< y_rk4[0] << "  " << exact_answer (tmin, params_ptr) << endl;
 
-  double tmin = 0.;		// starting t value 
-  double tmax = 3.;		// last t value 
-  y_euler[0] = 1.0;		// initial condition for y(t) 
-  y_rk4[0] = 1.0;		// initial condition for y(t) 
+	double h0 = 0.1;		// initialize mesh spacing 
+	for (double t = tmin; t <= tmax; t += h0){
+		euler (N, t, y_euler, h0, rhs, params_ptr);	// Euler's algorithm 
+		runge4 (N, t, y_rk4, h0, rhs, params_ptr);	        // 4th order R-K 
+		out << scientific << setprecision (9)
+			<< t + h0 << "  "
+			<< y_euler[0] << "  "
+			<< y_rk4[0] << "  " << exact_answer (t + h0, params_ptr) << endl;
+	}
+	cout << "data stored in diffeq_test.dat\n";
+	out.close ();			// close the output file 
+*/
+	cout<<"starting\n";
+	ofstream out ("diffeq_test.dat");
+	double tmin = 0.0;
+	double tmax = 0.1;
+	//cout << "h               euler           rk4               exact_answer" << endl;
+	out << "#      h                euler                   rk4                     exact \n";
+	for (double h = 1e-9; h <= 1.; h*= 10){
+		if(h >= 1e-5) tmax = 1.;
+		cout << scientific << h << "  " << tmax << "\n";
+		for (double t = tmin; t<=tmax; t += h){
+			euler(N, t, y_euler, h, rhs, params_ptr);
+			runge4(N, t, y_rk4, h, rhs, params_ptr);	
+		}
+		out << scientific << setprecision(16)
+			<< h << "  "
+			<< y_euler[0] << "  "
+			<< y_rk4[0] << "  "
+			<< exact_answer(tmax, params_ptr) << endl;
+	}
+	out.close();
 
-  // print out a header line and the first set of points 
-  out << "#      t           y_euler(t)         y_rk4(t)        y_exact(t) \n";
-  out << scientific << setprecision (9)
-    << tmin << "  "
-    << y_euler[0] << "  "
-    << y_rk4[0] << "  " << exact_answer (tmin, params_ptr) << endl;
-
-  double h = 0.1;		// initialize mesh spacing 
-
-  for (double t = tmin; t <= tmax; t += h)
-  {
-
-    // find y(t+h) and output vs. t+h 
-    euler (N, t, y_euler, h, rhs, params_ptr);	// Euler's algorithm 
-
-    runge4 (N, t, y_rk4, h, rhs, params_ptr);	        // 4th order R-K 
-
-    out << scientific << setprecision (9)
-      << t + h << "  "
-      << y_euler[0] << "  "
-      << y_rk4[0] << "  " << exact_answer (t + h, params_ptr) << endl;
-  }
-
-  cout << "data stored in diffeq_test.dat\n";
-  out.close ();			// close the output file 
-
-  return (0);			// successful completion 
+	return (0);			// successful completion 
 }
 
 
 //************************** rhs ************************************
-//
-//  * This is the function defining the right hand side of the diffeq
-//
-//*********************************************************************
-double
-rhs (double t, double y[], int i, void *params_ptr)
-{
+double rhs (double t, double y[], int i, void *params_ptr){
   double a = ((f_parameters *) params_ptr)->alpha;
   // double b = ((f_parameters *) params_ptr)->beta; 
 
-  if (i == 0)
-  {
-    return (-a * t * y[0]);
-  }
+	if (i == 0){
+		return (-a * t * y[0]);
+	}
 
   return (1);			// something's wrong if we get here 
 }
 
 //********************** exact_answer **************************
-//
-//  * This is the exact answer for y(t)
-//
-//******************************************************************
-double
-exact_answer (double t, void *params_ptr)
-{
-  // recover a and b from the void pointer params_ptr
-  double a = ((f_parameters *) params_ptr)->alpha;
-  double b = ((f_parameters *) params_ptr)->beta;
+double exact_answer (double t, void *params_ptr){
+	double a = ((f_parameters *) params_ptr)->alpha;
+	double b = ((f_parameters *) params_ptr)->beta;
 
-  return (b * exp (-a * t * t / 2.));
+	return (b * exp (-a * t * t / 2.));
 }
