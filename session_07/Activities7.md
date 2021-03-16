@@ -58,6 +58,6 @@ I added `-b*y[1]` to the equation modifying `y[1]` before dividing by the mass i
 
 ### Identify the three regimes described in the Session 7 notes: underdamped, critically damped, and overdamped.
 
-![oscillator plots](https://github.com/psharma117/PHY480-Computational-Physics/session_07/oscillator-regimes.png)
+![oscillator plots](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_07/oscillator-regimes.png)
 
 
