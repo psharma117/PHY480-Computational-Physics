@@ -20,6 +20,6 @@ I used theta0 = 0.05 in all cases. For alpha, I used 0, 0.2, 1, 2 for the respec
 
 Undamped			|Underdamped
 :------------------:|:-----------------:
-![](https://github.com/psharma117/PHY480-Computational-Physics/tree/main/session_08/pendulum_00.png)|![](https://github.com/psharma117/PHY480-Computational-Physics/tree/main/session_08/pendulum_02.png)
+![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_00.png)|![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_02.png)
 
 
