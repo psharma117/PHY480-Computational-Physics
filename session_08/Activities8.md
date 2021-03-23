@@ -21,9 +21,7 @@ I used theta0 = 0.05 in all cases. For alpha, I used 0, 0.2, 1, 2 for the respec
 Undamped,alpha = 0	|Underdamped, alpha = 0.2
 :------------------:|:-----------------:
 ![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_00.png)|![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_02.png)
-:------------------:|:-----------------:
 Critically damped, alpha = 1.0 | Overdamped, alpha = 2.0
-:------------------:|:-----------------:
 ![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_10.png)|![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_08/pendulum_20.png)
 
 
