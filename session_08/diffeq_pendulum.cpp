@@ -43,13 +43,13 @@ int main (void){
 	force_parameters rhs_parameters;  // parameters for the function 
 
 	// initialize force parameters and initial conditions 
-	double f_ext = 0;
+	double f_ext = 0.2;
 	double omega_ext = 0.689;
 	double T_ext = 2. * pi / omega_ext;  // period for external frequency
 	double phi_ext = 0.;
 	double omega0 = 1.;
-	double alpha = 0;
-	double theta0 = 0.05;    // initial (angular) position
+	double alpha = 0.2;
+	double theta0 = 0.8;    // initial (angular) position
 	double theta_dot0 = 0.0;      // initial (angular) velocity
 
 	int T_skip = 1000;    // every T_skip points means once every T_ext
