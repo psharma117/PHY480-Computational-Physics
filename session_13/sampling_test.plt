@@ -18,7 +18,7 @@ set xlabel "energy E"
 set ylabel "P(E)"
 
 # set the terminal type to be the screen (which is x11 here)
-set term x11 
+#set term x11 
 
 # plot
 set style data linespoints
@@ -32,8 +32,8 @@ plot \
 
 
 # output the plot to the file sampling_test_plt.ps   
-set out "sampling_test_plt.ps"
-set term postscript color 
+#set out "sampling_test_plt.ps"
+#set term postscript color 
 replot
 
 reset
