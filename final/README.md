@@ -33,7 +33,7 @@ julia>
 ```
 # My work
 
-I wrote all of my code myself. I implemented the standard Metropolis Hastings algorithm in [`metropolis.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/metropolis.jl) and the Wolff Cluster algorithm in [`wolff_cluster.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/wolff_cluster.jl). For my analysis (and briefly in the Metropolis implementation), I used the functions in `lattice_functions.jl`
+I wrote the standard Metropolis Hastings algorithm in [`metropolis.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/metropolis.jl) and the Wolff Cluster algorithm in [`wolff_cluster.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/wolff_cluster.jl). For my analysis (and briefly in the Metropolis implementation), I used the functions in [`lattice_functions.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/lattice_functions.jl)
 
-I do my main discussion in `ising.ipynb` which is a standard Jupyter Notebook with a Julia kernel instead of a Python kernel.
+I do my main discussion in [`ising.ipynb`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/ising.ipynb) which is a standard Jupyter Notebook with a Julia kernel instead of a Python kernel.
 
