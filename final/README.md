@@ -1,1 +1,33 @@
-# Test
+# Installing Julia
+
+If you don't have Julia installed before, it can be found [here](https://julialang.org/downloads/). I'm using the latest stable version by default.
+
+Julia has a package manager that's accessed within its prompt, which is accessed by just typing `julia` in the terminal just like with `python` and `gnuplot`. For this project, the only external package I used was `Plots` with the `gr` backend. To install `Plots.jl`, see the following example prompt:
+
+```julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.6.0 (2021-03-24)
+ _/ |\__'_|_|_|\__'_|  |  release-1.6/f9720dc2eb* (fork: 291 commits, 140 days)
+|__/                   |
+
+julia> import Pkg
+
+julia> Pkg.add("Plots")
+    Updating registry at `~/.julia/registries/General`
+   Resolving package versions...
+  No Changes to `~/.julia/environments/v1.6/Project.toml`
+  No Changes to `~/.julia/environments/v1.6/Manifest.toml`
+
+julia> Pkg.add("GR")
+   Resolving package versions...
+  No Changes to `~/.julia/environments/v1.6/Project.toml`
+  No Changes to `~/.julia/environments/v1.6/Manifest.toml`
+
+julia>
+
+
+```
