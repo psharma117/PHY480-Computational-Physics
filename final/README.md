@@ -1,8 +1,8 @@
-# Installing Julia
+# Getting set up: Julia
 
-If you don't have Julia installed before, it can be found [here](https://julialang.org/downloads/). I'm using the latest stable version by default.
+If you want to run any of my code and don't already have Julia installed, it can be found [here](https://julialang.org/downloads/). I'm using the latest stable version by default.
 
-Julia has a package manager that's accessed within its prompt, which is accessed by just typing `julia` in the terminal just like with `python` and `gnuplot`. For this project, the only external package I used was `Plots` with the `gr` backend. To install `Plots.jl`, see the following example prompt:
+Julia has a package manager that's accessed within its prompt, which is started by just typing `julia` in the terminal just like with `python` and `gnuplot`. For this project, the only external package I used was `Plots` with the `gr` backend. To install `Plots.jl`, see the following example prompt (of course in my case it just reports no changes made as they're already installed):
 
 ```julia
                _
@@ -31,3 +31,9 @@ julia>
 
 
 ```
+# My work
+
+I wrote all of my code myself. I implemented the standard Metropolis Hastings algorithm in [`metropolis.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/metropolis.jl) and the Wolff Cluster algorithm in [`wolff_cluster.jl`](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/final/wolff_cluster.jl). For my analysis (and briefly in the Metropolis implementation), I used the functions in `lattice_functions.jl`
+
+I do my main discussion in `ising.ipynb` which is a standard Jupyter Notebook with a Julia kernel instead of a Python kernel.
+
