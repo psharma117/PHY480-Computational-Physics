@@ -25,24 +25,25 @@ using namespace std;     // if omitted, then need std::cout, std::cin
 
 const double pi = 4.*atan(1.);  
 
-int
-main (int argc, char *argv[])   // use the standard, if obscure, names
-{
-  if (argc != 2)   // check if there is exactly one argument  
-  { 
-    // argv[0] is the program name
-    cout << "usage: " << argv[0] << " <radius>" << endl;
-    cout << "Try again!" << endl;
-    exit (0);   // quit the program  
-  }
+int main (int argc, char *argv[]){   // use the standard, if obscure, names
+	if (argc != 3){   // check if there are exactly two arguments
+		// argv[0] is the program name
+		cout << "usage: " << argv[0] << " <radius>" << endl;
+		cout << "Try again!" << endl;
+		exit (0);   // quit the program  
+	}
 
-  double radius = atof(argv[1]);    // convert 1st argument to a double
+	double radius = atof(argv[1]);    // convert 1st argument to a double
+	int again = atoi(argv[2]);    // convert 2st argument to an int
 
-  double area = pi * radius * radius;	// area formula
+	double area = pi * radius * radius;	// area formula
 
-  cout << "radius = " << radius << ",  area = " << area << endl;
+	for (int i = 0; i<again; i++){
+		cout << "radius = " << radius << ",  area = " << area << endl;
+	}
 
-  return 0;			// "0" for successful completion
+
+	return 0;			// "0" for successful completion
 }
 
 //*********************************************************************//

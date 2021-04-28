@@ -20,23 +20,23 @@
 #  
 #*************************************************************************
 from subprocess import call
-import numpy   # could use "from numpy import *" to avoid typing numpy
+import numpy as np  # could use "from numpy import *" to avoid typing numpy
 
 # Define the inputs at the top, so they are easy to find and change
-value_list1 = numpy.linspace(1,2,num=11)   # num chosen so nicely spaced
-value_list2 = numpy.arange(1.,0.,-0.25)
+value_list1 = np.linspace(1,2,num=11)   # num chosen so nicely spaced
+value_list2 = np.arange(1.,0.,-0.25)
 
 # Ok, let's do it . . .
-print "\nUsing functions from numpy to specify radii."
+print ( "\nUsing functions from numpy to specify radii." )
 
-print "\nFirst try a list of evenly spaced numbers from linspace:"
+print ( "\nFirst try a list of evenly spaced numbers from linspace:" )
 for radius in value_list1:    # don't forget the colon!
-  my_command = "./area_cmdline " + str(radius)  # convert radius to a string
-  call(my_command, shell=True)    # pass  "my_command" to be executed
+    my_command = "./area_cmdline.x " + str(radius) + " 1"  # convert radius to a string
+    call(my_command, shell=True)    # pass  "my_command" to be executed
 
-print "\nNow try a list using arange:"
+print ( "\nNow try a list using arange:" )
 for radius in value_list2:    # don't forget the colon!
-  my_command = ["./area_cmdline", str(radius)]  # convert radius to a string
-  call(my_command)
+    my_command = "./area_cmdline.x " + str(radius) + " 1"  # convert radius to a string
+    call(my_command, shell=True)
 
 #*************************************************************************

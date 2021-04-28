@@ -29,50 +29,45 @@ using namespace std;     // if omitted, then need std::cout, std::cin
 const double pi = M_PI;   // define pi using the cmath pre-defined version 
 double area (double radius);   // separate out the area calculation
 
-int
-main (void)       // no command-line arguments here
-{
-  ifstream input_file ("area_files.inp", ios::in);  // open for input only
-  if (input_file.bad())   // check if the file is there and can be read
-  {
-    cerr << "Unable to open area_files.inp. " << endl;
-    exit(1);   // bail out
-  }
-  
-  // open the output file so that old versions are overwritten ("trunc")
-  ofstream output_file ("area_files.out", ios::out|ios::trunc);
-  output_file << "#  radius      area   " << endl;
+int main (void){       // no command-line arguments here
+	ifstream input_file ("area_files.inp", ios::in);  // open for input only
+	if (input_file.bad())   // check if the file is there and can be read
+	{
+		cerr << "Unable to open area_files.inp. " << endl;
+		exit(1);   // bail out
+	}
 
-  // print radii to the output file
-  string line;   // entire line from the input file
-  while (getline(input_file,line))
-  {
-    if (line[0] == '#')   // skip line if the first character is "#"
-    {
-      cout << "comment line: " << line << endl;
-    } 
-    else   // we assume this is a real line
-    {    
-      double radius;
-      sscanf(line.c_str(),"%lf",&radius);  // find a double (%lf) in line
+	// open the output file so that old versions are overwritten ("trunc")
+	ofstream output_file ("area_files.out", ios::out|ios::trunc);
+	output_file << "#  radius      area   " << endl;
 
-      output_file << setw(8) << fixed << setprecision(2) << radius << "  " 
-                  << setw(12) << setprecision(3) << area(radius) << endl;
-    }  
-  }
+	// print radii to the output file
+	string line;   // entire line from the input file
+	while (getline(input_file,line)){
+		if (line[0] == '#')   // skip line if the first character is "#"
+		{
+			cout << "comment line: " << line << endl;
+		} 
+		else   // we assume this is a real line
+		{    
+			double radius;
+			sscanf(line.c_str(),"%lf",&radius);  // find a double (%lf) in line
 
-  input_file.close();
-  output_file.close();
+			output_file << setw(8) << fixed << setprecision(2) << radius << "  " 
+				<< setw(12) << setprecision(3) << area(radius) << endl;
+		}  
+	}
 
-  return 0;			// "0" for successful completion
+	input_file.close();
+	output_file.close();
+
+	return 0;			// "0" for successful completion
 }
 
 //*********************************************************************//
 
-double
-area (double radius)
-{
-  return pi * radius * radius;  // area formula
+double area (double radius){
+	return pi * radius * radius;  // area formula
 }
 
 //*********************************************************************//

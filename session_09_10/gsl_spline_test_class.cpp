@@ -28,15 +28,20 @@ int main (void){
 	double sigma_th[NMAX] = {9.34, 17.9, 41.5, 83.5, 51.5, 21.5, 10.8, 6.29, 4.09};
 
 	// Make the spline object
-	string type = "cubic";
-	Spline my_cubic_spline (E_values, sigma_th, NMAX, type);
+	Spline my_cubic_spline (E_values, sigma_th, NMAX, "cubic");
+	Spline my_poly_spline (E_values, sigma_th, NMAX, "polynomial");
+	Spline my_linear_spline (E_values, sigma_th, NMAX, "linear");
 
 	// Evaluate the spline and derivatives
 	ofstream csout; 
 	csout.open("cross_section_th.dat");
 	csout << "E value " << "    " << "cross section" << "    " << "Breit Wigner" << "\n";
 	for (double E = 5.; E<=200.; E+= 5.){
-		csout << E << "    " << my_cubic_spline.y(E) << "    " << breit_wigner(E) << "\n";
+		csout << E 
+			<< "    " << my_cubic_spline.y(E) 
+			<< "    " << my_poly_spline.y(E)
+			<< "    " << my_linear_spline.y(E)
+			<< "    " << breit_wigner(E) << "\n";
 	}
 	/*
 	 *double y = my_cubic_spline.y (x);

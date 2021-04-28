@@ -59,7 +59,7 @@ The times all dropped by 5 orders of magnitude. With the flag, `squareit` looks 
 
 ### Use gnuplot to make phase-space plots of all three cases on a single plot, noting where they begin and end. Sketch it and describe what you observe. This is called an isolated attractor. 
 
-![](this will be a picture link)
+![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_09_10/phase-plot.png)
 
 ## GSL Interpolation Routines
 
@@ -68,6 +68,43 @@ The times all dropped by 5 orders of magnitude. With the flag, `squareit` looks 
 I'm curious how the freeing of the spline object is handled in the class since there's no way to indicate to the class when the main program is done with it. 
 
 ### Use the code to generate a cubic spline interpolation for the cross section from 0 to 200 MeV in steps of 5 MeV. Output this data and the exact results from equation (10.7) in the notes to a file for plotting with gnuplot and try it out. Plot the exact results "with lines" and the spline using "with linespoints" (or "w linesp"), so you can see both the individual points and the trends.
+
+![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_09_10/cubic-spline.png)
+
+### Now modify the Spline class to allow for a polynomial interpolation (see the GSL handout) and change the gsl_spline_test_class.cpp main program to generate linear and polynomial interpolations as well and add code to print the results to your output file. Did you succeed?
+
+I did, I just had to add a test case to the class and then copy/paste the same line 3 times.
+
+### Generate a graph with all three interpolations plotted along with the exact result. Comment here (a sketch might help) on the strengths and weaknesses of the different interpolation methods, both near the peak and globally.
+
+![](https://github.com/psharma117/PHY480-Computational-Physics/blob/main/session_09_10/all-interpolations.png)
+
+The cubic spline noticeably misses the value near the resonance point, while the polynomial and linear points seem to hit it. However, farther away, the cubic spline lies right on top of the predicted curve. 
+
+
+## Command Line Mystery
+
+###  The "Command Line Mystery" is a whodunit designed to give you some practice with useful shell commands and how to string them together (with "pipes"). Follow the instructions on the clmystery handout. Did you solve the mystery? 
+
+I did, the perp was Jeremy Bowers.
+
+## Python Scripts for C++ Programs
+
+### Look at area_cmdline.cpp first and try it out (there is a makefile), first omitting an argument when executing it. Then look at and try run_area_cmdline1.py. Change the list of numbers to generate the area for radii from 5 to 25 spaced by 5. Did you succeed?
+
+I did, after converting some outdated python 2.x syntax.
+
+### Modify both area_cmdline.cpp so that it takes two arguments, the radius and an integer called again. Change the code so the output line is repeated again times. Modify run_area_cmdline1.py so it works with this new version. Did you succeed?
+
+I did. 
+
+### Try out run_area_cmdline2.py, modifying value_list1 and value_list2 to help you understand how they work. Questions? [Note: this might fail on Cygwin]
+
+Nope, very straightforward.
+
+## Cubic Splining
+
+### Your task is to determine how many (equally spaced) points to use to represent the wave function. Suppose you need the derivative of the wave function to be accurate to one part in 10^6 for 1 < r < 4 (absolute, not relative error) Devise (and carry out!) a plan that will tell you the spacing and the number of points needed to reach this goals. What did you do?
 
 
 
