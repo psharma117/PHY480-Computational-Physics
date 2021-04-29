@@ -2,7 +2,7 @@
 
 If you want to run any of my code and don't already have Julia installed, it can be found [here](https://julialang.org/downloads/). I'm using the latest stable version by default.
 
-Julia has a package manager that's accessed within its prompt, which is started by just typing `julia` in the terminal just like with `python` and `gnuplot`. For this project, the only external package I used was `Plots` with the `gr` backend. To install `Plots.jl`, see the following example prompt (of course in my case it just reports no changes made as they're already installed):
+Julia has a package manager that's accessed within its prompt, which is started by just typing `julia` in the terminal just like with `python` and `gnuplot`. For this project, I used the `Plots` package with the `gr` backend. I also needed to install the `IJulia` package to allow Jupyter to run with a Julia kernel. To install `Plots.jl`, see the following example prompt (of course in my case it just reports no changes made as they're already installed):
 
 ```julia
                _
@@ -27,8 +27,10 @@ julia> Pkg.add("GR")
   No Changes to `~/.julia/environments/v1.6/Project.toml`
   No Changes to `~/.julia/environments/v1.6/Manifest.toml`
 
-julia>
-
+julia> Pkg.add("IJulia")
+   Resolving package versions...
+  No Changes to `~/.julia/environments/v1.6/Project.toml`
+  No Changes to `~/.julia/environments/v1.6/Manifest.toml`
 
 ```
 # My work

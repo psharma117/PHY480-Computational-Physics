@@ -1,24 +1,15 @@
 #wolff_cluster
 
-const J = 1.
-lattice = rand([-1, 1], 100, 100)
-# show(stdout, "text/plain", lattice)
-# println("How many iterations? Press enter to do 100")
-# iters = readline()
-# println("What temperature (J=1)? Press enter for T = 1.5")
-# temp  = readline()
-# if isempty(iters)
-	# iters = 100
-# else
-	# iters = parse(Int64, iters)
-# end
-# if isempty(temp)
-	# temp = 1.5
-# else
-	# temp = parse(Float64, temp)
-# end
+#=================================================================
+wolff takes in:
+	-spins		: an array consisting just of the numbers -1 and 1
+	-T			: A temperature with default value 1.0
+	-max_iter	:a max number of iterations with default value 100
 
-function wolff(spins::Array{Int64}, T::Float64 = 1.5, max_iter::Int64 = 100)
+And returns an array modified by the wolff cluster algorithm.
+=================================================================#
+
+function wolff(spins::Array{Int64}, T::Float64 = 1.5, max_iter::Int64 = 100)::Array{Int64}
 	side_length = size(spins, 1)
 
 	#We'll perform max_iter iterations of this algorithm, which means picking 
@@ -89,8 +80,4 @@ function wolff(spins::Array{Int64}, T::Float64 = 1.5, max_iter::Int64 = 100)
 	end
 	return spins
 end
-
-# @time wolff(lattice, temp, iters)
-
-# run(`python plot.py`)
 

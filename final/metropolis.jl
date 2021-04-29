@@ -1,16 +1,15 @@
 # metropolis.jl
 
-# lattice = Array{Int8}(undef, 2, 2)
-# random = rand([-1, 1], 3, 3)
-# ground_state = ones(Int64, 3,3)
 include("lattice_functions.jl")
 
 
 #==================================================================
 metropolis_hastings takes in:
-	-max_iter: a max number of iterations to run the algorithm for
 	-spins	 : an array consisting just of the numbers -1 and 1
-and returns an array modified by the metropolis hastings algorithm.
+	-T		 : A temperature with default value 1.0
+	-max_iter: a max number of iterations with default value 100
+
+And returns an array modified by the metropolis hastings algorithm.
 ===================================================================#
 
 function metropolis(spins::Array{Int64}, T::Float64 = 1., max_iter::Int64 = 100)::Array{Int64}
@@ -29,13 +28,5 @@ function metropolis(spins::Array{Int64}, T::Float64 = 1., max_iter::Int64 = 100)
 	end
 	return spins
 end
-
-# println(compute_energy(random))
-# show(stdout, "text/plain", random)
-# println("\n")
-# println(compute_energy(ground_state, J, h), "\n")
-# new = metropolis_hastings(50, random)
-# println(compute_energy(new))
-# show(stdout, "text/plain", new)
 
 

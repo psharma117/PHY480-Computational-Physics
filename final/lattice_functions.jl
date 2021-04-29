@@ -3,7 +3,8 @@ compute_energy takes in:
         -J    : the nearest-neighbor coupling between spins
         -h    : the combination of B field and magnetic moment
         -spins: the array of spin values, 1 and -1
-to compute the total energy of a given configuration.
+
+To compute the total energy of a given configuration.
 ==================================================================#
 
 function compute_energy(spins::Array{Int64}, J::Float64 = 1., h::Float64 = 0.)::Float64
@@ -16,10 +17,16 @@ function compute_energy(spins::Array{Int64}, J::Float64 = 1., h::Float64 = 0.)::
 		energy -= J*spins[side_length, i]*spins[side_length, i+1]
 		energy -= J*spins[i, side_length]*spins[i+1, side_length]
 	end
-	energy -= h*sum(spins)                          #Adding external field contribution
+	energy -= h*sum(spins)                  #Adding possible external field contribution
 	return energy
 end
 
+#=================================================================
+compute_magnetization takes in:
+        -spins: the array of spin values, 1 and -1
+		
+To compute the total magnetization of a given configuration.
+==================================================================#
 
 function compute_magnetization(spins::Array{Int64})::Float64
 	side_length = size(spins, 1)
